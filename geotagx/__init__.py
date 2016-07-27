@@ -25,11 +25,20 @@
 from flask.ext.plugins import Plugin
 
 __plugin__  = "GeoTagX"
-__version__ = "0.0.0"
+__version__ = "0.0.1"
 
 
 class GeoTagX(Plugin):
     def setup(self):
         """Initializes the GeoTag-X plugin.
         """
-        pass
+        from flask import current_app as app
+        from view.geotagx import blueprint as geotagx_blueprint
+
+        # A list of blueprint <handle, URL prefix> pairs.
+        blueprints = [
+            (geotagx_blueprint, "/geotagx"),
+        ]
+
+        for (handle, url_prefix) in blueprints:
+            app.register_blueprint(handle, url_prefix=url_prefix)
