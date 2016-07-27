@@ -1,0 +1,8 @@
+{
+	"identifier": "plugin-geotagx",
+	"name": "GeoTag-X",
+	"description": "A plugin that extends PyBossa's core functionality with features used by the GeoTag-X project.",
+	"author": "UNITAR/UNOSAT",
+	"website": "https://github.com/geotagx/plugin-geotagx",
+	"license": "MIT"
+}
