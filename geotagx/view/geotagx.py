@@ -32,7 +32,6 @@ from pybossa.model.task_run import TaskRun
 from pybossa.model.task import Task
 from pybossa.model.project import Project
 from pybossa.model.category import Category
-from pybossa.model.blogpost import Blogpost
 from pybossa.util import Pagination, pretty_date, admin_required, UnicodeWriter
 from pybossa.auth import ensure_authorized_to
 from pybossa.core import db, task_repo, user_repo, sentinel, mail
@@ -46,7 +45,6 @@ from wtforms import Form, IntegerField, DecimalField, TextField, BooleanField, \
     SelectField, validators, TextAreaField, PasswordField, FieldList, SubmitField
 from flask.ext.mail import Message
 from pybossa.util import admin_required, UnicodeWriter
-from sqlalchemy import desc
 from flask import jsonify, Response
 from StringIO import StringIO
 import json
@@ -697,28 +695,6 @@ def sourcerer_dashboard_commands():
 			"result" : "ERROR",
 		}
 		return jsonify(_result)
-
-
-"""
-	Endpoint to retrieve list of latest blog posts
-"""
-@blueprint.route('/blogs')
-def blogs():
-	"""
-	Show all blog posts for now
-	TODO : this should show only a slice of all the blogposts with pagination
-	"""
-	blogposts = Blogpost.query.order_by(desc(Blogpost.created)).all()
-	left_column = []
-	right_column = []
-
-	for idx, val in enumerate(blogposts):
-		if idx%2 == 0:
-			left_column.append(val)
-		else:
-			right_column.append(val)
-
-	return render_template('geotagx/blogs/blogs.html', left_column=left_column, right_column=right_column)
 
 """
 	Form class for Newsletter form
