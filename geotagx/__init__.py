@@ -22,6 +22,7 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
+from flask import current_app as app
 from flask.ext.plugins import Plugin
 
 __plugin__  = "GeoTagX"
@@ -32,11 +33,12 @@ class GeoTagX(Plugin):
     def setup(self):
         """Initializes the GeoTag-X plugin.
         """
-        from flask import current_app as app
+        from filters import blueprint as filters_blueprint
         from view.geotagx import blueprint as geotagx_blueprint
 
         # A list of blueprint <handle, URL prefix> pairs.
         blueprints = [
+            (filters_blueprint, None),
             (geotagx_blueprint, "/geotagx"),
         ]
 
