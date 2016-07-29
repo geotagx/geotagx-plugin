@@ -119,14 +119,53 @@ def _find_cover_image(body):
     return result
 
 
-def _summarize(body, minimum_length=200):
+def _summarize(body):
     """Summarizes the specified blog post's body.
+
+    This function will extract the first paragraph from the specified body.
+    While the function does a reasonable job, it is far from robust as it does not cover
+    a few corner-cases of the markdown format. A better solution would be to introduce
+    a 'summary' field to the Blogpost class, allowing authors to write their own summaries.
 
     Args:
         body (str): A blog post's body.
-        minimum_length (int): The minimum number of characters (including whitespace) of the returned summary.
 
     Returns:
         str: A summary of the specified body.
     """
-    return body[:body.find("\r\n")]
+    summary = ""
+    if body:
+        # The first summary is at least a quarter of the original body's length.
+        # Note that body is truncated after a paragraph.
+        summary = body[:body.find("\r\n", len(body)/4)]
+
+        # Remove all images from the summary since the cover image is already in use.
+        from re import findall
+        for image in findall('(!\[.*\]\(.*\))', summary):
+            summary = summary.replace(image, "")
+
+        # With the images removed, get rid of any leading whitespace that may have been introduced.
+        summary = summary.lstrip()
+
+        markdown_delimiters = set(["*", "#", "_"])
+        limit = 0
+
+        if summary[0] in markdown_delimiters:
+            delimiter = summary[0]
+            delimiter_length = 1
+            while summary[delimiter_length] == delimiter:
+                delimiter_length += 1
+
+            delimiter *= delimiter_length
+            limit = summary.find(delimiter, delimiter_length + 1) + delimiter_length
+        else:
+            minimum_length = 200
+            limit = 0
+            while limit < minimum_length:
+                k = summary.find("\r\n", limit + 1)
+                if k < limit:
+                    break
+                else:
+                    limit = k
+
+    return summary[:limit]
