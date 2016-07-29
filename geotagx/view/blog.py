@@ -24,7 +24,6 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-from pybossa.core import blog_repo
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 
@@ -38,6 +37,9 @@ def index(page):
 
     Args:
         page (int): A page number.
+
+    Returns:
+        unicode: The page's rendered HTML.
     """
     from pybossa.model.blogpost import Blogpost
     from sqlalchemy import desc
@@ -63,13 +65,43 @@ def index(page):
         abort(404)
 
 
+@blueprint.route("/post/<int:id>", endpoint="post")
+def render_post(id):
+    """Renders the blog post with the specified identifier.
+
+    Args:
+        id (int): A blog post's unique identifier.
+
+    Returns:
+        unicode: The page's rendered HTML.
+    """
+    try:
+        return render_template("blog/post.html", post=_get_post(id))
+    except TemplateNotFound:
+        abort(404)
+
+
+def _get_post(id):
+    """Returns the blog post with the specified id.
+
+    Args:
+        id (int): A blog post's unique identifier.
+
+    Returns:
+        Blogpost | None: If found, an instance of the post with the specified id, None otherwise.
+    """
+    from pybossa.core import blog_repo
+    return blog_repo.get(id)
+
+
 def _find_cover_image(body):
     """Attempts to find a cover image to use for a summarized blog post.
 
     The cover image will be the first image found in the specified body.
     Because the body is written in markdown format, the algorithm works by
     looking for the pattern "![<label>](<URL>)" where <label> is an image
-    label and <URL> is the URL to the image.
+    label and <URL> is the URL to the image. If an occurrence of the
+    aforementioned pattern is found, <URL> is returned.
 
     Args:
         body (str): A blog post's body.
