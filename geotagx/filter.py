@@ -29,7 +29,7 @@
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from flask import Blueprint
 
-blueprint = Blueprint("geotagx-filters", __name__)
+blueprint = Blueprint("geotagx-filter", __name__)
 
 
 @blueprint.app_template_filter("geotagx_md5")
