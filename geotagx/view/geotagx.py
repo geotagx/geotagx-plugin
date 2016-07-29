@@ -283,7 +283,7 @@ def flush_task_runs(project_short_name, confirmed):
 		elif confirmed == "unconfirmed":
 			# Obtain data required by the project profile renderer
 		    (project, owner, n_tasks, n_task_runs,
-		     overall_progress, last_activity) = projects_view.project_by_shortname(project_short_name)
+		     overall_progress, last_activity, n_results) = projects_view.project_by_shortname(project_short_name)
 		    return render_template('geotagx/projects/delete_task_run_confirmation.html',
 		                           project=project,
 		                           owner=owner,
@@ -291,6 +291,7 @@ def flush_task_runs(project_short_name, confirmed):
 		                           n_task_runs=n_task_runs,
 		                           overall_progress=overall_progress,
 		                           last_activity=last_activity,
+		                           n_results=n_results,
 		                           n_completed_tasks=cached_projects.n_completed_tasks(project.id),
 		                           n_volunteers=cached_projects.n_volunteers(project.id))
 		else:
