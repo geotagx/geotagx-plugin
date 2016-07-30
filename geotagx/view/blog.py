@@ -25,7 +25,6 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
 
 blueprint = Blueprint("geotagx-blog", __name__)
 
@@ -59,10 +58,7 @@ def index(page):
         p.cover_image = _find_cover_image(p.body) # _find_cover_image must be called before the body is truncated by _summarize.
         p.body = _summarize(p.body)
 
-    try:
-        return render_template("blog/index.html", posts=posts, pagination=pagination)
-    except TemplateNotFound:
-        abort(404)
+    return render_template("blog/index.html", posts=posts, pagination=pagination)
 
 
 @blueprint.route("/post/<int:id>", endpoint="post")
@@ -75,10 +71,7 @@ def render_post(id):
     Returns:
         unicode: The page's rendered HTML.
     """
-    try:
-        return render_template("blog/post.html", post=_get_post(id))
-    except TemplateNotFound:
-        abort(404)
+    return render_template("blog/post.html", post=_get_post(id))
 
 
 def _get_post(id):
