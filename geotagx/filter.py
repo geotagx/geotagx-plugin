@@ -4,7 +4,7 @@
 # It contains implementations for custom filters.
 #
 # Authors:
-# - S. P. Mohanty
+# - S. P. Mohanty (sp.mohanty@cern.ch)
 # - Jeremy Othieno (j.othieno@gmail.com)
 #
 # Copyright (c) 2016 UNITAR/UNOSAT

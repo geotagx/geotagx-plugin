@@ -2,7 +2,7 @@
 #
 # This module is part of the GeoTag-X PyBossa plugin.
 #
-# Author: S.P. Mohanty
+# Author: S.P. Mohanty (sp.mohanty@cern.ch)
 #
 # Copyright (c) 2016 UNITAR/UNOSAT
 #
