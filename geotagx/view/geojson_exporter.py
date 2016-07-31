@@ -80,7 +80,7 @@ def _export_category_results_as_geoJSON(category_name):
                 project_question_question_text_mapping[unicode(short_name+"::"+_question['answer']['saved_as']+"::question_text")] = _question['title']
 
             #Only export results of known GEOTAGX projects that are created with `geotagx-project-template`
-            task_runs_generator = geotagx_json_exporter._gen_json("task_run", project['id'])
+            task_runs_generator = geotagx_json_exporter.gen_json("task_run", project['id'])
             _task_runs = ""
             for task_run_c in task_runs_generator:
                 _task_runs += task_run_c
