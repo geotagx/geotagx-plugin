@@ -35,12 +35,14 @@ class GeoTagX(Plugin):
         """
         from view.blog import blueprint as blog_blueprint
         from filter import blueprint as filter_blueprint
+        from view.geojson_exporter import blueprint as geojson_exporter_blueprint
         from view.geotagx import blueprint as geotagx_blueprint
 
         # A list of blueprint <handle, URL prefix> pairs.
         blueprints = [
             (blog_blueprint, "/blog"),
             (filter_blueprint, None),
+            (geojson_exporter_blueprint, None),
             (geotagx_blueprint, "/geotagx"),
         ]
 
