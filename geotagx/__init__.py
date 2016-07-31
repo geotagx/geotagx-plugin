@@ -34,13 +34,13 @@ class GeoTagX(Plugin):
         """Initializes the GeoTag-X plugin.
         """
         from view.blog import blueprint as blog_blueprint
-        from filters import blueprint as filters_blueprint
+        from filter import blueprint as filter_blueprint
         from view.geotagx import blueprint as geotagx_blueprint
 
         # A list of blueprint <handle, URL prefix> pairs.
         blueprints = [
             (blog_blueprint, "/blog"),
-            (filters_blueprint, None),
+            (filter_blueprint, None),
             (geotagx_blueprint, "/geotagx"),
         ]
 
