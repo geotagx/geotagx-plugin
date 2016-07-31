@@ -583,11 +583,3 @@ def newsletter():
 @blueprint.route('/map-summary/<category_name>')
 def map_summary(category_name):
        return render_template("/geotagx/map_summary/summary.html", category_name=category_name)
-
-@blueprint.route('/feedback')
-def feedback():
-	"""
-	Moves Geotag-X feedback to a separate page within Geotag-X instead of
-	forcing the user out of the site onto the external limesurvey page.
-	"""
-	return render_template('geotagx/feedback/feedback.html')

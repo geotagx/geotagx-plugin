@@ -2,6 +2,8 @@
 #
 # This module is part of the GeoTag-X PyBossa plugin.
 #
+# Author: Jeremy Othieno (j.othieno@gmail.com)
+#
 # Copyright (c) 2016 UNITAR/UNOSAT
 #
 # The MIT License (MIT)
@@ -22,31 +24,16 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-from flask import current_app as app
-from flask.ext.plugins import Plugin
+from flask import Blueprint, render_template
 
-__plugin__  = "GeoTagX"
-__version__ = "0.0.1"
+blueprint = Blueprint("geotagx-feedback", __name__)
 
 
-class GeoTagX(Plugin):
-    def setup(self):
-        """Initializes the GeoTag-X plugin.
-        """
-        from view.blog import blueprint as blog_blueprint
-        from filter import blueprint as filter_blueprint
-        from view.geojson_exporter import blueprint as geojson_exporter_blueprint
-        from view.feedback import blueprint as feedback_blueprint
-        from view.geotagx import blueprint as geotagx_blueprint
+@blueprint.route("/")
+def index():
+    """Renders the feedback page.
 
-        # A list of blueprint <handle, URL prefix> pairs.
-        blueprints = [
-            (blog_blueprint, "/blog"),
-            (filter_blueprint, None),
-            (feedback_blueprint, "/feedback"),
-            (geojson_exporter_blueprint, None),
-            (geotagx_blueprint, "/geotagx"),
-        ]
-
-        for (handle, url_prefix) in blueprints:
-            app.register_blueprint(handle, url_prefix=url_prefix)
+    Returns:
+        unicode: The page's rendered HTML.
+    """
+    return render_template("geotagx/feedback/feedback.html")
