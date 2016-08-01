@@ -22,7 +22,6 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-from flask import current_app as app
 from flask.ext.plugins import Plugin
 
 __plugin__  = "GeoTagX"
@@ -33,11 +32,21 @@ class GeoTagX(Plugin):
     def setup(self):
         """Initializes the GeoTag-X plugin.
         """
+        from flask import current_app as app
         from view.blog import blueprint as blog_blueprint
         from filter import blueprint as filter_blueprint
         from view.geojson_exporter import blueprint as geojson_exporter_blueprint
         from view.feedback import blueprint as feedback_blueprint
         from view.geotagx import blueprint as geotagx_blueprint
+
+        # The plugin's default configuration.
+        default_configuration = {
+            "GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS": 30,
+            "GEOTAGX_NEWSLETTER_DEBUG_EMAIL_LIST": [],
+        }
+        for key in default_configuration:
+            if app.config.get(key, None) is None:
+                app.config[key] = default_configuration[key]
 
         # A list of blueprint <handle, URL prefix> pairs.
         blueprints = [
@@ -47,6 +56,5 @@ class GeoTagX(Plugin):
             (geojson_exporter_blueprint, None),
             (geotagx_blueprint, "/geotagx"),
         ]
-
         for (handle, url_prefix) in blueprints:
             app.register_blueprint(handle, url_prefix=url_prefix)

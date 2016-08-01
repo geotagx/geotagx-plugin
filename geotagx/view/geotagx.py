@@ -56,14 +56,6 @@ import markdown
 blueprint = Blueprint('geotagx', __name__)
 
 
-def setup_geotagx_config_default_params():
-	""" Sets up default values for geotagx specific config params """
-	if "GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS" not in current_app.config.keys():
-		current_app.config['GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS'] = 30
-
-	if "GEOTAGX_NEWSLETTER_DEBUG_EMAIL_LIST" not in current_app.config.keys():
-		current_app.config['GEOTAGX_NEWSLETTER_DEBUG_EMAIL_LIST'] = []
-
 @blueprint.route('/get_geotagx_survey_status')
 def get_geotagx_survey_status():
 	""" Get geotagx survey status  """
@@ -74,7 +66,6 @@ def get_geotagx_survey_status():
 			rank_and_score = cached_users.rank_and_score(current_user.id)
 			result['geotagx_survey_status'] = current_user.info['geotagx_survey_status']
 			result['task_runs'] = rank_and_score['score']
-			setup_geotagx_config_default_params()
 			result['final_survey_task_requirements'] = current_app.config['GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS']
 		else:
 			result['geotagx_survey_status'] = "RESPONSE_NOT_TAKEN"
@@ -108,7 +99,6 @@ def render_survey():
 	if not current_user.is_anonymous():
 		rank_and_score = cached_users.rank_and_score(current_user.id)
 		survey_type = "INITIAL"
-		setup_geotagx_config_default_params()
 		if rank_and_score['score'] > current_app.config['GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS'] and "geotagx_survey_status" in current_user.info.keys() and current_user.info['geotagx_survey_status'] == "AGREE_TO_PARTICIPATE" :
 			survey_type = "FINAL"
 
