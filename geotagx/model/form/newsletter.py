@@ -24,16 +24,10 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-from flask import Blueprint, render_template
+from wtforms import Form, TextField, TextAreaField, BooleanField, SubmitField
 
-blueprint = Blueprint("geotagx-feedback", __name__)
-
-
-@blueprint.route("/")
-def index():
-    """Renders the feedback page.
-
-    Returns:
-        unicode: The page's rendered HTML.
-    """
-    return render_template("geotagx/feedback/feedback.html")
+class NewsletterForm(Form):
+    subject = TextField("Subject")
+    debug_mode = BooleanField("Debug Mode")
+    message = TextAreaField("Message")
+    submit = SubmitField("Send")

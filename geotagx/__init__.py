@@ -33,6 +33,7 @@ class GeoTagX(Plugin):
         """Initializes the GeoTag-X plugin.
         """
         from flask import current_app as app
+        from view.admin import blueprint as admin_blueprint
         from view.blog import blueprint as blog_blueprint
         from filter import blueprint as filter_blueprint
         from view.geojson_exporter import blueprint as geojson_exporter_blueprint
@@ -50,6 +51,7 @@ class GeoTagX(Plugin):
 
         # A list of blueprint <handle, URL prefix> pairs.
         blueprints = [
+            (admin_blueprint, "/admin"),
             (blog_blueprint, "/blog"),
             (filter_blueprint, None),
             (feedback_blueprint, "/feedback"),
