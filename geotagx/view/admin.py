@@ -2,7 +2,9 @@
 #
 # This module is part of the GeoTag-X PyBossa plugin.
 #
-# Author: S. P. Mohanty (sp.mohanty@cern.ch)
+# Authors:
+# - S. P. Mohanty (sp.mohanty@cern.ch)
+# - Jeremy Othieno (j.othieno@gmail.com)
 #
 # Copyright (c) 2016 UNITAR/UNOSAT
 #
@@ -86,6 +88,8 @@ def send_newsletter():
 
 @blueprint.route("/manage-users/", defaults={"page": 1})
 @blueprint.route("/manage-users/page/<int:page>")
+@login_required
+@admin_required
 def manage_users(page):
     """
     Admin page for all PyBossa registered users.
