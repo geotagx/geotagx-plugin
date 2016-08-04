@@ -62,6 +62,23 @@ class GeoTagX(Plugin):
             app.register_blueprint(handle, url_prefix=url_prefix)
 
         setup_survey(app)
+        setup_sourcerer(app)
+
+
+def setup_default_configuration(app, default_configuration):
+    """Sets up the specified application's default configuration.
+
+    This function will only modify an application's configuration entry
+    if it does not already contain a value.
+
+    Args:
+        app (werkzeug.local.LocalProxy): The application's instance.
+        default_configuration (dict): The default configuration.
+    """
+    if default_configuration and isinstance(default_configuration, dict):
+        for key in default_configuration:
+            if app.config.get(key, None) is None:
+                app.config[key] = default_configuration[key]
 
 
 def setup_survey(app, url_prefix="/survey"):
@@ -73,11 +90,19 @@ def setup_survey(app, url_prefix="/survey"):
     """
     from view.survey import blueprint
 
-    default_configuration = {
+    setup_default_configuration(app, {
         "GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS": 30,
-    }
-    for key in default_configuration:
-        if app.config.get(key, None) is None:
-            app.config[key] = default_configuration[key]
+    })
+    app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+
+def setup_sourcerer(app, url_prefix="/sourcerer"):
+    """Sets up the sourcerer.
+
+    Args:
+        app (werkzeug.local.LocalProxy): The current application's instance.
+        url_prefix (str): The blueprint's URL prefix.
+    """
+    from view.sourcerer import blueprint
 
     app.register_blueprint(blueprint, url_prefix=url_prefix)
