@@ -39,10 +39,10 @@ class GeoTagX(Plugin):
         from view.geojson_exporter import blueprint as geojson_exporter_blueprint
         from view.feedback import blueprint as feedback_blueprint
         from view.geotagx import blueprint as geotagx_blueprint
+        from view.survey import blueprint as survey_blueprint
 
         # The plugin's default configuration.
         default_configuration = {
-            "GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS": 30,
             "GEOTAGX_NEWSLETTER_DEBUG_EMAIL_LIST": [],
         }
         for key in default_configuration:
@@ -60,3 +60,24 @@ class GeoTagX(Plugin):
         ]
         for (handle, url_prefix) in blueprints:
             app.register_blueprint(handle, url_prefix=url_prefix)
+
+        setup_survey(app)
+
+
+def setup_survey(app, url_prefix="/survey"):
+    """Sets up the participation survey.
+
+    Args:
+        app (werkzeug.local.LocalProxy): The current application's instance.
+        url_prefix (str): The blueprint's URL prefix.
+    """
+    from view.survey import blueprint
+
+    default_configuration = {
+        "GEOTAGX_FINAL_SURVEY_TASK_REQUIREMENTS": 30,
+    }
+    for key in default_configuration:
+        if app.config.get(key, None) is None:
+            app.config[key] = default_configuration[key]
+
+    app.register_blueprint(blueprint, url_prefix=url_prefix)
