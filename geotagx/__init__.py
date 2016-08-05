@@ -63,6 +63,7 @@ class GeoTagX(Plugin):
 
         setup_survey(app)
         setup_sourcerer(app)
+        setup_project_browser(app)
 
 
 def setup_default_configuration(app, default_configuration):
@@ -104,5 +105,17 @@ def setup_sourcerer(app, url_prefix="/sourcerer"):
         url_prefix (str): The blueprint's URL prefix.
     """
     from view.sourcerer import blueprint
+
+    app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+
+def setup_project_browser(app, url_prefix="/browse"):
+    """Sets up the project browser blueprint.
+
+    Args:
+        app (werkzeug.local.LocalProxy): The current application's instance.
+        url_prefix (str): The blueprint's URL prefix.
+    """
+    from view.project_browser import blueprint
 
     app.register_blueprint(blueprint, url_prefix=url_prefix)
