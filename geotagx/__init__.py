@@ -64,6 +64,7 @@ class GeoTagX(Plugin):
         setup_survey(app)
         setup_sourcerer(app)
         setup_project_browser(app)
+        setup_helper_functions(app)
 
 
 def setup_default_configuration(app, default_configuration):
@@ -119,3 +120,16 @@ def setup_project_browser(app, url_prefix="/browse"):
     from view.project_browser import blueprint
 
     app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+
+def setup_helper_functions(app):
+    """Sets up the helper functions.
+
+    Args:
+        app (werkzeug.local.LocalProxy): The current application's instance.
+    """
+    import helper
+    functions = {
+        "get_project_category": helper.get_project_category,
+    }
+    app.jinja_env.globals.update(**functions)
