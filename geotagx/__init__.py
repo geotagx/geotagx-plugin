@@ -35,6 +35,7 @@ class GeoTagX(Plugin):
         from flask import current_app as app
         from view.admin import blueprint as admin_blueprint
         from view.blog import blueprint as blog_blueprint
+        from view.community import blueprint as community_blueprint
         from filter import blueprint as filter_blueprint
         from view.geojson_exporter import blueprint as geojson_exporter_blueprint
         from view.feedback import blueprint as feedback_blueprint
@@ -53,6 +54,7 @@ class GeoTagX(Plugin):
         blueprints = [
             (admin_blueprint, "/admin"),
             (blog_blueprint, "/blog"),
+            (community_blueprint, "/community"),
             (filter_blueprint, None),
             (feedback_blueprint, "/feedback"),
             (geojson_exporter_blueprint, None),
