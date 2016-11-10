@@ -133,5 +133,6 @@ def setup_helper_functions(app):
     import helper
     functions = {
         "get_project_category": helper.get_project_category,
+        "get_blurred_cover_image_path": helper.get_blurred_cover_image_path,
     }
     app.jinja_env.globals.update(**functions)
