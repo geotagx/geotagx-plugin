@@ -113,7 +113,6 @@ def _export_category_results_as_geoJSON(category_name):
         Inspired by : http://www.gal-systems.com/2011/07/convert-coordinates-between-web.html
     """
     def _project_coordinate_from_webmercator_toWGS84(coordinates):
-        print coordinates
         mercatorX_lon = coordinates[0]
         mercatorY_lat = coordinates[1]
 
