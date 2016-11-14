@@ -124,6 +124,8 @@ def visualize(short_name, task_id):
   	return abort(404)
 
 
-@blueprint.route('/map-summary/<category_name>')
-def map_summary(category_name):
-       return render_template("/geotagx/map_summary/summary.html", category_name=category_name)
+@blueprint.route('/map-summary/<string:category_short_name>')
+def map_summary(category_short_name):
+    from pybossa.core import project_repo
+    category = project_repo.get_category_by(short_name=category_short_name)
+    return render_template("/geotagx/map_summary/summary.html", active_cat=category)
