@@ -67,11 +67,17 @@ def get_blurred_cover_image_path(project):
     from flask import current_app
     from os.path import join, splitext, isfile
 
+
     upload_folder = current_app.config["UPLOAD_FOLDER"]
     info = project["info"]
 
+    # Not all projects have a cover image assigned to them. Make sure this one does before continuing.
+    container = info.get("container")
+    if not container:
+        return ""
+
     # A path in URL terms (does not include the upload folder).
-    thumbnail_path = join(info["container"], info["thumbnail"])
+    thumbnail_path = join(container, info["thumbnail"])
     [filename, extension] = splitext(thumbnail_path)
     blurred_thumbnail_path = filename + "_blurred" + extension
 
