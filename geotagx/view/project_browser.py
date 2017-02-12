@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-# This module is part of the GeoTag-X PyBossa plugin. It contains a Flask Blueprint
-# implementation that offers an alternative approach to browsing PyBossa projects.
+# This module is part of the GeoTag-X PyBossa plugin. It implements a view that
+# offers an alternative approach to browsing projects.
 #
 # Author: Jeremy Othieno (j.othieno@gmail.com)
 #
-# Copyright (c) 2016 UNITAR/UNOSAT
+# Copyright (c) 2017 UNITAR/UNOSAT
 #
 # The MIT License (MIT)
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +27,17 @@
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from flask import Blueprint, render_template
 
-blueprint = Blueprint("geotagx-project-browser", __name__)
+blueprint = Blueprint("geotagx-project-browser", __name__, url_prefix="/browse")
+"""The view's blueprint."""
+
+
+def setup(application):
+    """Sets up the view.
+
+    Args:
+        application (werkzeug.local.LocalProxy): The current Flask application's instance.
+    """
+    application.register_blueprint(blueprint)
 
 
 @blueprint.route("/")

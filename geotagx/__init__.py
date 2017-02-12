@@ -2,7 +2,9 @@
 #
 # This module is part of the GeoTag-X PyBossa plugin.
 #
-# Copyright (c) 2016 UNITAR/UNOSAT
+# Author: Jeremy Othieno (j.othieno@gmail.com)
+#
+# Copyright (c) 2017 UNITAR/UNOSAT
 #
 # The MIT License (MIT)
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -63,9 +65,10 @@ class GeoTagX(Plugin):
         for (handle, url_prefix) in blueprints:
             app.register_blueprint(handle, url_prefix=url_prefix)
 
+        setup_views(app)
+
         setup_survey(app)
         setup_sourcerer(app)
-        setup_project_browser(app)
         setup_helper_functions(app)
 
 
@@ -83,6 +86,18 @@ def setup_default_configuration(app, default_configuration):
         for key in default_configuration:
             if app.config.get(key, None) is None:
                 app.config[key] = default_configuration[key]
+
+
+def setup_views(application):
+    """Sets up the plugin's views.
+
+    Args:
+        application (werkzeug.local.LocalProxy): The current Flask application's instance.
+    """
+    from view.project_browser import setup as project_browser_setup
+    for setup in [
+        project_browser_setup,
+    ]: setup(application)
 
 
 def setup_survey(app, url_prefix="/survey"):
@@ -108,18 +123,6 @@ def setup_sourcerer(app, url_prefix="/sourcerer"):
         url_prefix (str): The blueprint's URL prefix.
     """
     from view.sourcerer import blueprint
-
-    app.register_blueprint(blueprint, url_prefix=url_prefix)
-
-
-def setup_project_browser(app, url_prefix="/browse"):
-    """Sets up the project browser blueprint.
-
-    Args:
-        app (werkzeug.local.LocalProxy): The current application's instance.
-        url_prefix (str): The blueprint's URL prefix.
-    """
-    from view.project_browser import blueprint
 
     app.register_blueprint(blueprint, url_prefix=url_prefix)
 
