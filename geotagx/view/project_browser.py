@@ -47,4 +47,28 @@ def index():
     Returns:
         unicode: The page's rendered HTML.
     """
-    return render_template("projects/browse.html")
+    return render_template("projects/browse.html", categories=_get_cached_categories())
+
+
+def _get_cached_categories():
+    """Returns all cached categories.
+
+    Returns:
+        list: A list of all cached categories.
+    """
+    from flask.ext.login import current_user
+    from pybossa.cache import categories as cached_categories
+    from pybossa.cache import projects as cached_projects
+
+    categories = cached_categories.get_used()
+
+    if not (current_user.is_authenticated() and current_user.admin):
+        restricted_categories = {
+            "underdevelopment",
+        }
+        categories = filter(lambda c: c["short_name"] not in restricted_categories, categories)
+
+    for category in categories:
+        category["projects"] = cached_projects.get_all(category["short_name"])
+
+    return categories
