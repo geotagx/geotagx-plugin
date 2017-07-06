@@ -38,6 +38,7 @@ class GeoTagX(Plugin):
         from view.admin import blueprint as admin_blueprint
         from view.blog import blueprint as blog_blueprint
         from view.community import blueprint as community_blueprint
+        from view.faq import blueprint as faq_blueprint
         from filters import blueprint as filter_blueprint
         from view.geojson_exporter import blueprint as geojson_exporter_blueprint
         from view.feedback import blueprint as feedback_blueprint
@@ -57,6 +58,7 @@ class GeoTagX(Plugin):
             (admin_blueprint, "/admin"),
             (blog_blueprint, "/blog"),
             (community_blueprint, "/community"),
+            (faq_blueprint, "/faq"),
             (filter_blueprint, None),
             (feedback_blueprint, "/feedback"),
             (geojson_exporter_blueprint, None),
@@ -67,7 +69,6 @@ class GeoTagX(Plugin):
 
         setup_project_categories()
         setup_views(app)
-
         setup_survey(app)
         setup_sourcerer(app)
         setup_helper_functions(app)
